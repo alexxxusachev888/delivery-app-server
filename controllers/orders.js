@@ -18,7 +18,7 @@ const getAllOrdersByPhoneOrEmail = async (req, res) => {
     if (orders.length === 0) {
         throw HttpError(404, 'Order not found');
     }
-    
+    console.log(orders)
     res.json({ orders });
 }
 
