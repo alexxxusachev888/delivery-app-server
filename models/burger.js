@@ -15,7 +15,7 @@ const burgerSchema = new Schema({
   quantity: {
     type: String,
   }
-})
+}, {versionKey: false, timestamps: true})
 
 const Burger = model('burger', burgerSchema);
 

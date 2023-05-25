@@ -1,15 +1,15 @@
 const {Schema, model} = require('mongoose');
 const Joi = require('joi');
-const {handleMangooseError} = require('../helpers');
+const {handleMongooseError} = require('../helpers');
 
 const orderSchema = new Schema({
   name: {
     type: String,
-    required: [true, 'Name password for user'],
+    required: [true, 'Name is required'],
   },
   phone: {
     type: String,
-    required: [true, 'Phone password for user'],
+    required: [true, 'Phone number is required'],
   },
   email: {
     type: String,
@@ -21,13 +21,21 @@ const orderSchema = new Schema({
   },
   totalSum: { 
     type: Number,
-    required: [true, 'TotlaSum is required'],
-  }
-})
+    required: [true, 'TotalSum is required'],
+  },
+  order: [{
+    _id: { type: Schema.Types.ObjectId },
+    name: { type: String},
+    price: { type: Number},
+    quantity: { type: Number},
+    shop: { type: String }
+  }]
+}, {versionKey: false, timestamps: true})
 
 const Order = model('order', orderSchema);
+orderSchema.post('save', handleMongooseError);
 
-const contactSchemaJoi = Joi.object({
+const orderSchemaJoi = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().required(),
   phone: Joi.string().required(),
@@ -44,7 +52,13 @@ const contactSchemaJoi = Joi.object({
   )
 }).options({ abortEarly: false });
 
+const searchOrdersSchemaJoi = Joi.object({
+  email: Joi.string(),
+  phone: Joi.string(),
+}).options({ abortEarly: false });
+
 module.exports = {
   Order,
-  contactSchemaJoi
+  orderSchemaJoi,
+  searchOrdersSchemaJoi
 }
