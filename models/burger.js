@@ -13,7 +13,7 @@ const burgerSchema = new Schema({
     type: String,
   },
   quantity: {
-    type: String,
+    type: Number,
   }
 }, {versionKey: false, timestamps: true})
 
